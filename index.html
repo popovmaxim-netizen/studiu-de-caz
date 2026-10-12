@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Studiu de caz – Git și GitHub</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #f0f6fc;
+            background-color: #0d1117;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* MENIU */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(13, 17, 23, 0.95);
+            border-bottom: 1px solid #30363d;
+        }
+
+        nav {
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #58a6ff;
+        }
+
+        .menu {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .menu a {
+            color: #b1bac4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu a:hover {
+            color: white;
+        }
+
+        /* SECȚIUNEA PRINCIPALĂ */
+
+        .hero {
+            min-height: 620px;
+            display: flex;
+            align-items: center;
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(88, 166, 255, 0.18),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 30%,
+                    rgba(163, 113, 247, 0.15),
+                    transparent 30%
+                );
+        }
+
+        .hero-content {
+            max-width: 850px;
+        }
+
+        .tag {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 14px;
+            color: #b6dbff;
+            background-color: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.4);
+            border-radius: 30px;
+            font-size: 14px;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: clamp(44px, 7vw, 75px);
+            line-height: 1.05;
+        }
+
+        h1 span {
+            color: #58a6ff;
+        }
+
+        .hero p {
+            max-width: 750px;
+            color: #9da7b3;
+            font-size: 19px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 20px;
+            color: white;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .button-primary {
+            color: #0d1117;
+            background-color: white;
+            border-color: white;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* SECȚIUNI */
+
+        section {
+            padding: 85px 0;
+        }
+
+        .section-title {
+            max-width: 750px;
+            margin-bottom: 40px;
+        }
+
+        .section-title small {
+            color: #58a6ff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            margin: 10px 0 15px;
+            font-size: 40px;
+            line-height: 1.2;
+        }
+
+        .section-title p {
+            color: #9da7b3;
+            font-size: 17px;
+        }
+
+        /* TABEL */
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #161b22;
+        }
+
+        th,
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #30363d;
+            text-align: left;
+        }
+
+        th {
+            color: #58a6ff;
+            background-color: #1f2630;
+        }
+
+        td {
+            color: #b1bac4;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* AVANTAJE */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            padding: 26px;
+            background: linear-gradient(145deg, #1f2630, #161b22);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+        }
+
+        .card:hover {
+            border-color: #58a6ff;
+        }
+
+        .card-icon {
+            margin-bottom: 15px;
+            font-size: 30px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #9da7b3;
+            font-size: 15px;
+        }
+
+        /* PAȘI */
+
+        .steps {
+            display: grid;
+            gap: 15px;
+            counter-reset: pas;
+        }
+
+        .step {
+            counter-increment: pas;
+            display: grid;
+            grid-template-columns: 55px 1fr;
+            gap: 18px;
+            padding: 22px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+        }
+
+        .step::before {
+            content: counter(pas);
+            width: 45px;
+            height: 45px;
+            display: grid;
+            place-items: center;
+            color: #0d1117;
+            background-color: #3fb950;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .step p {
+            margin-top: 5px;
+            color: #9da7b3;
+        }
+
+        /* CONCLUZIE */
+
+        .conclusion {
+            padding: 40px;
+            background: linear-gradient(
+                135deg,
+                rgba(63, 185, 80, 0.12),
+                rgba(88, 166, 255, 0.1)
+            );
+            border: 1px solid rgba(63, 185, 80, 0.4);
+            border-radius: 16px;
+        }
+
+        .conclusion p {
+            color: #b1bac4;
+            font-size: 18px;
+        }
+
+        /* SURSE */
+
+        .sources {
+            display: grid;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .sources a {
+            display: block;
+            padding: 15px 18px;
+            color: #58a6ff;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            border-color: #58a6ff;
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 30px 0;
+            color: #9da7b3;
+            border-top: 1px solid #30363d;
+            text-align: center;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* TELEFON */
+
+        @media (max-width: 800px) {
+            .menu {
+                display: none;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            h2 {
+                font-size: 33px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: 550px;
+            }
+
+            h1 {
+                font-size: 43px;
+            }
+
+            th,
+            td {
+                padding: 13px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MENIU -->
+
+    <header>
+        <nav class="container">
+            <a href="#acasa" class="logo">
+                GIT <span>Studiu de caz</span>
+            </a>
+
+            <ul class="menu">
+                <li><a href="#despre">Despre</a></li>
+                <li><a href="#avantaje">Avantaje</a></li>
+                <li><a href="#proces">Proces</a></li>
+                <li><a href="#concluzie">Concluzie</a></li>
+                <li><a href="#surse">Surse</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- PAGINA PRINCIPALĂ -->
+
+        <section class="hero" id="acasa">
+            <div class="container hero-content">
+
+                <div class="tag">
+                    ● Lucru în echipă și controlul versiunilor
+                </div>
+
+                <h1>
+                    Un proiect comun devine mai simplu cu
+                    <span>Git și GitHub</span>
+                </h1>
+
+                <p>
+                    Studiu de caz despre importanța utilizării aplicațiilor
+                    Git și GitHub în lucrul la un proiect comun.
+                </p>
+
+                <div class="buttons">
+                    <a href="#despre" class="button button-primary">
+                        Vezi studiul
+                    </a>
+
+                    <a href="#surse" class="button">
+                        Vezi resursele
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- DESPRE GIT ȘI GITHUB -->
+
+        <section id="despre">
+            <div class="container">
+
+                <div class="section-title">
+                    <small>Noțiuni de bază</small>
+
+                    <h2>Ce sunt Git și GitHub?</h2>
+
+                    <p>
+                        Git și GitHub au roluri diferite, dar sunt folosite
+                        împreună pentru dezvoltarea și organizarea proiectelor.
+                    </p>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criteriu</th>
+                                <th>Git</th>
+                                <th>GitHub</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Definiție</td>
+                                <td>
+                                    Sistem distribuit pentru controlul versiunilor.
+                                </td>
+                                <td>
+                                    Platformă online pentru găzduirea proiectelor Git.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Locul utilizării</td>
+                                <td>
+                                    Este utilizat local, pe calculator.
+                                </td>
+                                <td>
+                                    Este utilizat online, printr-un repository.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Rol principal</td>
+                                <td>
+                                    Salvează istoricul modificărilor prin commit-uri.
+                                </td>
+                                <td>
+                                    Permite colaborarea între membrii echipei.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Instrumente</td>
+                                <td>
+                                    Commit, branch, merge, push și pull.
+                                </td>
+                                <td>
+                                    Repository, Issues, Projects și Pull Requests.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- AVANTAJE -->
+
+        <section id="avantaje">
+            <div class="container">
+
+                <div class="section-title">
+                    <small>Importanță</small>
+
+                    <h2>Avantajele utilizării Git și GitHub</h2>
+
+                    <p>
+                        Aceste instrumente ajută echipa să lucreze organizat,
+                        sigur și eficient la același proiect.
+                    </p>
+                </div>
+
+                <div class="cards">
+
+                    <article class="card">
+                        <div class="card-icon">🕒</div>
+                        <h3>Istoricul modificărilor</h3>
+                        <p>
+                            Fiecare commit arată ce a fost schimbat, cine a
+                            efectuat modificarea și când a fost realizată.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">🤝</div>
+                        <h3>Colaborare</h3>
+                        <p>
+                            Mai mulți membri pot lucra în același timp pe
+                            diferite părți ale proiectului.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">🛡️</div>
+                        <h3>Siguranță</h3>
+                        <p>
+                            Versiunile anterioare pot fi recuperate atunci
+                            când apare o greșeală în proiect.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">🔍</div>
+                        <h3>Verificarea codului</h3>
+                        <p>
+                            Pull request-urile permit verificarea codului
+                            înainte ca acesta să fie integrat.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">📋</div>
+                        <h3>Organizarea sarcinilor</h3>
+                        <p>
+                            GitHub Issues și Projects ajută la repartizarea
+                            și urmărirea sarcinilor.
+                        </p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">🌐</div>
+                        <h3>Acces de oriunde</h3>
+                        <p>
+                            Proiectul poate fi accesat de membrii echipei
+                            de pe calculatoare diferite.
+                        </p>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PROCESUL DE COLABORARE -->
+
+        <section id="proces">
+            <div class="container">
+
+                <div class="section-title">
+                    <small>Flux de lucru</small>
+
+                    <h2>Cum lucrează echipa?</h2>
+
+                    <p>
+                        Respectarea unui proces clar reduce conflictele și
+                        face contribuțiile ușor de verificat.
+                    </p>
+                </div>
+
+                <div class="steps">
+
+                    <article class="step">
+                        <div>
+                            <h3>Crearea repository-ului</h3>
+                            <p>
+                                Coordonatorul creează repository-ul pe GitHub
+                                și adaugă membrii echipei.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="step">
+                        <div>
+                            <h3>Clonarea proiectului</h3>
+                            <p>
+                                Fiecare membru clonează proiectul pe propriul
+                                calculator folosind comanda git clone.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="step">
+                        <div>
+                            <h3>Crearea unui branch</h3>
+                            <p>
+                                Membrii creează branch-uri separate pentru
+                                sarcinile la care lucrează.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="step">
+                        <div>
+                            <h3>Salvarea modificărilor</h3>
+                            <p>
+                                Schimbările sunt salvate prin commit-uri
+                                care conțin mesaje clare.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="step">
+                        <div>
+                            <h3>Push și Pull Request</h3>
+                            <p>
+                                Codul este încărcat pe GitHub și verificat
+                                înainte de integrarea în branch-ul principal.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="step">
+                        <div>
+                            <h3>Merge și actualizare</h3>
+                            <p>
+                                După aprobare, schimbările sunt integrate,
+                                iar membrii descarcă versiunea actualizată.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUZIE -->
+
+        <section id="concluzie">
+            <div class="container">
+
+                <div class="conclusion">
+                    <small>CONCLUZIE</small>
+
+                    <h2>Un singur proiect, o echipă sincronizată</h2>
+
+                    <p>
+                        Git și GitHub sunt instrumente importante pentru
+                        realizarea unui proiect comun. Acestea permit păstrarea
+                        istoricului modificărilor, colaborarea dintre membrii
+                        echipei, verificarea codului și recuperarea versiunilor
+                        anterioare. Utilizate corect, ele reduc riscul pierderii
+                        fișierelor și contribuie la realizarea unui proiect
+                        organizat, sigur și eficient.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- RESURSE -->
+
+        <section id="surse">
+            <div class="container">
+
+                <div class="section-title">
+                    <small>Bibliografie</small>
+                    <h2>Resurse consultate</h2>
+
+                    <p>
+                        Documentație și materiale despre utilizarea
+                        Git și GitHub.
+                    </p>
+                </div>
+
+                <ul class="sources">
+                    <li>
+                        <a href="https://docs.github.com/en/get-started"
+                           target="_blank">
+                            GitHub Docs – Get started
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://www.w3schools.com/git/git_remote_getstarted.asp?remote=github"
+                           target="_blank">
+                            W3Schools – Git Remote și GitHub
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects"
+                           target="_blank">
+                            GitHub Docs – About Projects
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://docs.github.com/en/copilot/using-github-copilot/asking-github-copilot-questions-in-github"
+                           target="_blank">
+                            GitHub Docs – GitHub Copilot
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SUBSOL -->
+
+    <footer>
+        <div class="container">
+            Realizat de <strong>Popov Maxim</strong> |
+            Studiu de caz Git/GitHub | 2026
+        </div>
+    </footer>
+
+</body>
+</html>
